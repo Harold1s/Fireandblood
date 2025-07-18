@@ -1,20 +1,65 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Sound effect for the main button (optional)
+    // ======================================================
+    // ======================================================
+    const repoOwner = 'harold1s';
+    const repoName = 'Fireandblood';
+    const filePath = 'news.json';
+    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
+    const newsContainer = document.getElementById('news-container');
+
+    if (newsContainer) {
+        const loadingMessage = newsContainer.querySelector('.loading-message');
+
+        
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`فشل الاتصال بـ GitHub: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                
+                const decodedContent = decodeURIComponent(escape(window.atob(data.content)));
+                const newsItems = JSON.parse(decodedContent);
+
+                if (loadingMessage) {
+                    loadingMessage.remove();
+                }
+
+                if (newsItems.length === 0) {
+                    newsContainer.innerHTML = '<p>لا توجد أخبار حالياً.</p>';
+                    return;
+                }
+
+                newsItems.forEach(item => {
+                    const newsCard = document.createElement('div');
+                    newsCard.classList.add('news-card');
+                    newsCard.innerHTML = `
+                        <img src="${item.imageUrl}" alt="${item.title}">
+                        <h3>${item.title}</h3>
+                        <p>${item.content}</p>
+                    `;
+                    newsContainer.appendChild(newsCard);
+                });
+            })
+            .catch(error => {
+                console.error('حدث خطأ:', error);
+                if (loadingMessage) {
+                    loadingMessage.textContent = 'عفواً، فشل تحميل الأخبار.';
+                }
+            });
+    }
+
+
+    // ======================================================
+    // التأثيرات
+    // ======================================================
     const ctaButton = document.querySelector('.cta-button');
-    // Uncomment the lines below to add a dragon roar sound on click
-    // const dragonRoar = new Audio('URL_TO_DRAGON_ROAR_SOUND.mp3'); // You need to provide a URL for a sound file
-    // ctaButton.addEventListener('click', (e) => {
-    //     // Optional: prevent navigation until sound plays
-    //     // e.preventDefault(); 
-    //     dragonRoar.play();
-    //     // Optional: delay navigation to allow sound to play
-    //     // setTimeout(() => { window.open(e.target.href, '_blank'); }, 500);
-    // });
+    
 
-    // Animate content sections on scroll
     const sections = document.querySelectorAll('.content-section');
-
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -23,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }, {
-        threshold: 0.1 // Trigger when 10% of the section is visible
+        threshold: 0.1
     });
 
     sections.forEach(section => {
