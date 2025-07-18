@@ -159,37 +159,106 @@ nav a:hover {
     margin-bottom: 40px;
 }
 
-/* --- Events & Heroes Grid --- */
-.events-grid, .heroes-grid {
+/* --- Events, Heroes, and News Grids --- */
+/* تم دمج وتحديث هذه الأقسام */
+.events-grid,
+.heroes-grid,
+.news-grid { /* إضافة .news-grid هنا */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     text-align: center;
+    margin-top: 30px; /* لتباعد عن العنوان */
+    justify-content: center; /* توسيط البطاقات إذا كانت أقل من عدد الأعمدة الكامل */
 }
 
-.event-card, .hero-card {
+/* بطاقات الفعاليات والمشرفين (إذا كنت ستعيد استخدامها) */
+.event-card,
+.hero-card {
     background: rgba(30, 30, 30, 0.7);
     padding: 25px;
-    border: 1px solid #e50914;
+    border: 1px solid #e50914; /* أحمر النار */
     border-radius: 8px;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.event-card:hover, .hero-card:hover {
+.event-card:hover,
+.hero-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(229, 9, 20, 0.2);
 }
 
-.event-card h3, .hero-card h4 {
+.event-card h3,
+.hero-card h4 {
     margin-top: 0;
     font-size: 1.5em;
-    color: #ffd700; /* Gold */
+    color: #ffd700; /* ذهبي */
 }
 
 .hero-card p {
     color: #ccc;
     font-style: italic;
     font-size: 1.1em;
+}
+
+/* --- News Cards Specific Styles --- */
+.news-card {
+    background: rgba(30, 30, 30, 0.7); /* نفس خلفية البطاقات الأخرى */
+    padding: 20px;
+    border: 1px solid #e50914; /* أحمر النار */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    text-align: right;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    display: flex; /* لترتيب الصورة والعنوان والمحتوى بشكل عمودي */
+    flex-direction: column;
+    align-items: center; /* توسيط المحتوى داخل البطاقة */
+}
+
+.news-card:hover {
+    transform: translateY(-10px); /* نفس تأثير Hover لباقي البطاقات */
+    box-shadow: 0 10px 20px rgba(229, 9, 20, 0.2);
+}
+
+.news-card img {
+    max-width: 100%;
+    height: 200px; /* ارتفاع ثابت للصور */
+    object-fit: cover; /* لضمان تغطية الصورة للمساحة دون تشوه */
+    border-radius: 6px; /* حواف دائرية أقل قليلاً */
+    margin-bottom: 15px;
+    display: block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* ظل خفيف للصورة */
+}
+
+.news-card h3 {
+    color: #ffd700; /* ذهبي */
+    font-family: 'Cinzel', serif; /* استخدم Cinzel للعناوين الكبيرة */
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    text-align: center; /* توسيط عنوان الخبر */
+}
+
+.news-card p {
+    color: #E0E0E0; /* لون نص فاتح */
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.1em;
+    line-height: 1.6;
+    max-height: 120px; /* تحديد أقصى ارتفاع للمحتوى */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right; /* محاذاة النص لليمين */
+}
+
+/* تنسيق رسائل الحالة (تحميل، لا توجد أخبار، خطأ) */
+.loading-message, .no-news-message, .error-message {
+    color: #E0E0E0;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.2em;
+    text-align: center;
+    margin-top: 50px;
+    grid-column: 1 / -1; /* لجعل هذه الرسائل تأخذ عرض الشبكة بالكامل */
 }
 
 /* --- Quotes Section --- */
@@ -262,5 +331,14 @@ footer {
     }
     .content-section h2 {
         font-size: 2em;
+    }
+    .news-card img {
+        height: 180px; /* تقليل ارتفاع الصورة في الشاشات الصغيرة */
+    }
+    .news-card h3 {
+        font-size: 1.5em; /* تقليل حجم عنوان الخبر في الشاشات الصغيرة */
+    }
+    .news-card p {
+        font-size: 1em; /* تقليل حجم نص الخبر في الشاشات الصغيرة */
     }
 }
