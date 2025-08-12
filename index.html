@@ -431,7 +431,7 @@
         
         // !! هام جداً !!
         // استبدل هذا الرابط بالرابط العام لسيرفرك الذي يشغل البوت والـ API
-        const API_BASE_URL = 'https://your-app-name.on-render.com/api'; 
+        const API_BASE_URL = 'http://91.99.150.234:3078/api'; 
 
         const fetchStatsBtn = document.getElementById('fetch-stats-btn');
         const codeInput = document.getElementById('stats-code-input');
@@ -473,7 +473,7 @@
         function renderLeaderboard() {
             if(!leaderboardContainer) return;
             leaderboardContainer.innerHTML = '<p>جاري تحميل القائمة...</p>';
-            fetch(`${http://91.99.150.234:3078/api}/leaderboard`)
+            fetch(`${API_BASE_URL}/leaderboard`)
                 .then(response => response.json())
                 .then(data => {
                     leaderboardContainer.innerHTML = ''; // إفراغ الحاوية
