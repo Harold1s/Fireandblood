@@ -3,108 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مجتمع النار والدم</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <meta name="google-site-verification" content="SqVW20qMBydeAMIroQ0cnCMctb41UJd2-63fzJKpfzY" />
+    <title>النار والدم</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --card-bg: #2c2c2c;
+            --border-color: #444;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            padding-bottom: 80px;
+        }
+        
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--secondary-color);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-out;
+        }
+
+        #splash-screen img {
+            max-width: 250px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        #splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        main, .bottom-nav {
+            opacity: 0;
+            transition: opacity 0.8s ease-in;
+        }
+
+        body.loaded main,
+        body.loaded .bottom-nav {
+            opacity: 1;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background-image: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 1)), url('https://cdn.discordapp.com/attachments/989709733202116648/1397647408778838076/IMG_20250723_213124_507.jpg?ex=68827c15&is=68812a95&hm=a2721611923f33ef34655627e214340fdd3a020eab8dd6a05f452b1b5acc9518&');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 2px solid var(--primary-color);
+            border-radius: 0 0 15px 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn:hover {
+            background-color: #e63939;
+            transform: scale(1.05);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        .home-section {
+            padding: 40px 0;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border-bottom: 4px solid var(--primary-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+        }
+
+        .feature-card svg {
+            width: 50px;
+            height: 50px;
+            fill: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 10px 0;
+            color: #fff;
+        }
+
+        .feature-card p {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .about-us-section {
+            background-color: var(--card-bg);
+            text-align: center;
+            padding: 30px 25px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+        .about-us-section p {
+             max-width: 800px;
+             margin: 0 auto;
+             line-height: 1.7;
+             font-size: 1.05rem;
+             color: var(--text-color);
+        }
+        .about-us-section .section-title{
+            margin-top: 0;
+        }
+
+        .event-list { display: grid; gap: 15px; }
+        .event-card { background-color: var(--card-bg); padding: 20px; border-radius: 10px; border-left: 5px solid var(--primary-color); display: flex; flex-direction: column; gap: 10px; }
+        .event-card h3 { margin: 0; color: #fff; }
+        .event-info { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #ccc; }
+        .event-type { background-color: var(--primary-color); color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.8rem; }
+
+        .announcement-post { background-color: var(--card-bg); padding: 20px; border-radius: 10px; margin-bottom: 15px; }
+        .announcement-post h3 { margin-top: 0; color: var(--primary-color); }
+
+        .rules-section { margin-bottom: 40px; }
+        .rules-section h3 { font-size: 1.5rem; color: #fff; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
+        .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .rule-card { background-color: var(--card-bg); border-radius: 10px; padding: 20px; border-left: 5px solid var(--primary-color); display: flex; flex-direction: column; transition: transform 0.3s, box-shadow 0.3s; }
+        .rule-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .rule-card h4 { margin: 0 0 10px 0; color: #fff; font-size: 1.1rem; }
+        .rule-card p { margin: 0 0 15px 0; color: var(--text-color); line-height: 1.6; flex-grow: 1; }
+        .punishment { background-color: rgba(255, 77, 77, 0.1); border: 1px solid var(--primary-color); padding: 10px; border-radius: 8px; font-size: 0.9rem; color: #ffc2c2; font-weight: bold; text-align: center; }
+        .notes-section { background-color: var(--card-bg); padding: 20px; border-radius: 10px; border-top: 4px solid var(--primary-color); margin-top: 25px; }
+        .notes-section h4 { margin-top: 0; color: var(--primary-color); }
+        .notes-section ul { padding-right: 20px; margin: 0; color: var(--text-color); }
+        .notes-section li { margin-bottom: 10px; }
+        
+        .links-list { list-style: none; padding: 0; }
+        .links-list li a { display: block; background-color: var(--card-bg); color: var(--text-color); padding: 15px; margin-bottom: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: background-color 0.3s, transform 0.2s; border-right: 4px solid var(--primary-color); }
+        .links-list li a:hover { background-color: #3c3c3c; transform: translateX(-5px); }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: #222; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid var(--border-color); box-shadow: 0 -2px 10px rgba(0,0,0,0.3); }
+        .nav-button { background: none; border: none; color: #aaa; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.75rem; font-family: 'Cairo', sans-serif; flex-grow: 1; padding: 5px; }
+        .nav-button svg { width: 24px; height: 24px; }
+        .nav-button.active { color: var(--primary-color); }
+
+        /* === CSS الجديد الخاص بصفحة الإحصائيات === */
+        .stats-section {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .stats-section h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        .code-input-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        #stats-code-input {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+        }
+        #stats-code-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .user-stats-card {
+            display: none; /* يظهر بعد جلب البيانات */
+            background-color: #383838;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary-color);
+            margin-top: 15px;
+        }
+        .user-stats-card.visible {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        .user-stats-card h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.4rem;
+        }
+        .user-stats-card p {
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+        .user-stats-card span {
+            font-weight: bold;
+            color: #fff;
+        }
+        #leaderboard-container .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        #leaderboard-container .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        #leaderboard-container .rank {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            min-width: 30px;
+        }
+        #leaderboard-container .name {
+            flex-grow: 1;
+            padding: 0 10px;
+            color: #fff;
+        }
+        #leaderboard-container .messages {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="video-background">
-        <video autoplay muted loop id="background-video">
-            <source src="VID_20250716_171431_780.mp4">
-            Your browser does not support the video tag.
-        </video>
+    <div id="splash-screen">
+        <img src="1000008106-removebg-preview-1.png" alt="شعار">
     </div>
 
-    <div class="overlay"></div>
-
-    <header>
-        <div class="container">
-            <div class="logo">
-                <img src="IMG_20250718_181940_198.jpg" alt="شعار الكروب">
-                <h1>النار والدم</h1>
-            </div>
-            <nav>
-                <a href="#about">من نحن؟</a>
-                <a href="#events">فعالياتنا</a>
-                <a href="#news">أخبار القروب</a> <a href="#contact">تواصل معنا</a>
-            </nav>
-        </div>
-    </header>
-
     <main>
-        <section id="hero">
-            <div class="container content-section">
-                <h2>باسم التنانين وملوك فاليريا</h2>
-                <p class="subtitle">أهلاً بك في "النار والدم"، حيث تجتمع الأساطير وتُصنع الصداقات.</p>
-                <a href="https://t.me/fireandblooo" target="_blank" class="cta-button">🔥 انضم إلى العائلة الآن 🔥</a>
-            </div>
-        </section>
-
-        <section id="about" class="content-section">
-            <div class="container">
-                <h2>من نحن؟</h2>
-                <p>
-                    وُلد مجتمع "النار والدم" في يوليو 2024، لم يكن مجرد قروب على تيليغرام، بل كان شعلة جمعت محبي عالم "صراع العروش" وشغفهم بعائلة التارجارين وسلالتها في "آل التنين". الاسم مستوحى من رواية جورج آر. آر. مارتن الأسطورية، وشعارنا هو كلماتها الخالدة. مع مرور الوقت، تحولت هذه الشعلة إلى نار عظيمة، وأصبحنا مجتمعًا متنوعًا يرحب بالجميع، لكنه لا يزال ينبض بروح التنانين... روح النار والدم.
-                </p>
-            </div>
-        </section>
-
-        <section id="events" class="content-section">
-            <div class="container">
-                <h2>فعالياتنا المستمرة</h2>
-                <div class="events-grid">
-                    <div class="event-card">
-                        <h3>الأحد</h3>
-                        <p>أسئلة سينمائية</p>
-                    </div>
-                    <div class="event-card">
-                        <h3>الثلاثاء</h3>
-                        <p>تحديات ألعاب الهاتف</p>
-                    </div>
-                    <div class="event-card">
-                        <h3>الخميس</h3>
-                        <p>تحدي المعلومات العامة</p>
-                    </div>
+        <div id="home" class="page active">
+            <header class="header">
+                <h1>مركز النار والدم</h1>
+                <p>مجتمعك الحقيقي يبدأ من هنا. انضم إلينا وكن جزءًا من العائلة.</p>
+                <a href="https://t.me/fireandblooo" target="_blank" class="btn">انضم إلى الكروب 🔥</a>
+            </header>
+            <section class="home-section">
+                <h2 class="section-title">لماذا تنضم إلينا؟</h2>
+                <div class="features-grid">
+                    <div class="feature-card"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><h3>مجتمع فعال</h3><p>تفاعل مستمر، نقاشات ممتعة، وأعضاء رائعون من كل مكان.</p></div>
+                    <div class="feature-card"><svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.34.96.59 2.02.59 3.14 0 2.84-2.31 5.14-5.16 5.14z"/></svg><h3>فعاليات حماسية</h3><p>مسابقات وتحديات وفعاليات متنوعة تُقام بانتظام لكسر الروتين.</p></div>
+                    <div class="feature-card"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg><h3>بيئة آمنة</h3><p>قوانين واضحة ومشرفون متواجدون لضمان بيئة محترمة للجميع.</p></div>
+                    <div class="feature-card"><svg viewBox="0 0 24 24"><path d="M12 1a9 9 0 00-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h4v1h-7v2h6c1.66 0 3-1.34 3-3V10a9 9 0 00-9-9z"/></svg><h3>دعم فوري</h3><p>فريق دعم جاهز لمساعدتك والإجابة على استفساراتك في أي وقت.</p></div>
                 </div>
-            </div>
-        </section>
+            </section>
+            <section class="home-section about-us-section"><h2 class="section-title">عن مجتمعنا</h2><p>نحن في "النار والدم" لسنا مجرد مجموعة، بل عائلة افتراضية تهدف إلى توفير مساحة ترفيهية وآمنة للجميع. تأسسنا على مبدأ الاحترام المتبادل والمرح، ونسعى دائمًا لتقديم أفضل تجربة ممكنة لأعضائنا.</p></section>
+        </div>
+        <div id="events" class="page"><h2>📅 الفعاليات القادمة</h2><div id="event-list-container" class="event-list"></div></div>
+        <div id="announcements" class="page"><h2>📢 الإعلانات والتحديثات</h2><div id="announcements-container"></div></div>
+        <div id="rules" class="page"><h2>📜 القوانين والتعليمات</h2><div class="rules-section"><h3>قوانين الأعضاء</h3><div class="rules-grid"><div class="rule-card"><h4>1. ممنوع الشتم والإساءة</h4><p>تجنّب الألفاظ الجارحة أو المسيئة تجاه أي عضو، حتى لو كان على سبيل المزاح.</p><div class="punishment">🔸 العقوبة: إنذار</div></div><div class="rule-card"><h4>2. ممنوع الترويج</h4><p>يُمنع منعًا باتًا نشر روابط لمجموعات أخرى، قنوات، بوتات، أو أي نوع من الإعلانات دون إذن مسبق من الإدارة.</p><div class="punishment">🔸 العقوبة: إنذار، ثم تقييد 24 ساعة</div></div><div class="rule-card"><h4>3. ممنوع المحتوى غير اللائق</h4><p>يشمل ذلك الصور، الملصقات، الفيديوهات، أو أي محتوى خادش للحياء أو مسيء.</p><div class="punishment">🔸 العقوبة: حظر مباشر</div></div><div class="rule-card"><h4>4. ممنوع النقاشات الحساسة</h4><p>للحفاظ على بيئة ودية، يُرجى تجنّب الخوض في النقاشات الدينية أو السياسية التي قد تسبب جدلاً.</p><div class="punishment">🔸 العقوبة: إنذار</div></div><div class="rule-card"><h4>5. ممنوع السبام والتكرار</h4><p>لا ترسل رسائل متكررة، ملصقات بكثرة، أو أي محتوى يهدف إلى إزعاج الأعضاء وإغراق المحادثة.</p><div class="punishment">🔸 العقوبة: تقييد ساعتين</div></div><div class="rule-card"><h4>6. احترام المشرفين</h4><p>يجب اتباع تعليمات المشرفين وعدم الجدال معهم في العام. في حال وجود شكوى، توجّه إلى بوت الدعم.</p><div class="punishment">🔸 العقوبة: إنذار</div></div><div class="rule-card"><h4>7. ممنوع التحريض والفتنة</h4><p>أي محاولة لإثارة الخلافات بين الأعضاء أو زرع الفتنة ستواجه بإجراء صارم.</p><div class="punishment">🔸 العقوبة: إنذار</div></div><div class="rule-card"><h4>8. ممنوع الطائفية والعنصرية</h4><p>نحن مجتمع واحد، لا يُسمح بأي وصف أو تعليق مسيء على أساس ديني أو عرقي أو طائفي.</p><div class="punishment">🔸 العقوبة: إنذار</div></div></div><div class="notes-section"><h4>⚖️ نظام العقوبات</h4><p>تراكم <strong>4 إنذارات</strong> يؤدي إلى <strong>تقييد العضو لمدة 24 ساعة</strong>. تكرار المخالفات قد يؤدي إلى الحظر.</p></div></div><div class="rules-section"><h3>🛡️ تعليمات المشرفين</h3><div class="rules-grid"><div class="rule-card"><h4>1. كن قدوة حسنة</h4><p>المشرف هو واجهة المجموعة. يجب عليه الالتزام بجميع القوانين العامة وتطبيقها على نفسه أولاً.</p></div><div class="rule-card"><h4>2. الحيادية المطلقة</h4><p>تُستخدم الصلاحيات لفرض النظام فقط. يُمنع استخدامها لتصفية حسابات شخصية أو محاباة الأصدقاء.</p></div><div class="rule-card"><h4>3. التدرج في العقوبات</h4><p>اتبع التسلسل: إنذار > تقييد > حظر. الحظر الفوري مخصص للمخالفات الجسيمة فقط (محتوى خادش، ترويج).</p></div><div class="rule-card"><h4>4. الاحترام في التعامل</h4><p>حافظ على هدوئك وأسلوبك المحترم حتى مع الأعضاء المخالفين. تجنب الاستفزاز واللغة الجارحة.</p></div><div class="rule-card"><h4>5. النشاط والمتابعة</h4><p>تواجدك ومشاركتك ضروريان. الغياب الطويل دون عذر مسبق (أكثر من 7 أيام) قد يؤدي لسحب الرتبة.</p></div><div class="rule-card"><h4>6. الالتزام بالصلاحيات</h4><p>كل مشرف له مهام محددة. لا تتدخل في صلاحيات مشرف آخر دون تنسيق مسبق.</p></div><div class="rule-card"><h4>7. توثيق الإجراءات</h4><p>عند تنفيذ إجراء مهم (تقييد طويل، حظر)، يجب توضيح السبب في مجموعة الإدارة ليكون الجميع على بيّنة.</p></div></div><div class="notes-section"><h4>⚠️ ملاحظات هامة للمشرفين</h4><ul><li><strong>الحد الأقصى للأخطاء هو 3</strong>، وبعدها يتم سحب الرتبة فورًا.</li><li>الأخطاء تشمل: الغياب الطويل، إساءة التعامل، استخدام الصلاحيات بشكل خاطئ.</li><li><strong>الحظر بهدف المزاح أو الانتقام مرفوض تمامًا</strong> ويؤدي إلى سحب الرتبة مباشرة دون إنذار مسبق.</li></ul></div></div></div>
+        <div id="links" class="page"><h2>🔗 روابط مهمة</h2><ul class="links-list"><li><a href="https://t.me/fireandblooo" target="_blank">رابط الكروب الرئيسي</a></li><li><a href="https://t.me/H7GOT" target="_blank">قناة التحديثات</a></li><li><a href="https://t.me/ticketsysbot" target="_blank">بوت الدعم والتذاكر</a></li></ul></div>
 
-        <section id="news" class="content-section"> <div class="container">
-                <h2>آخر أخبار القروب</h2> <div id="news-container" class="news-grid">
-                    <p class="loading-message">جاري تحميل الأخبار...</p>
+        <div id="stats" class="page">
+            <h2>📊 الإحصائيات</h2>
+
+            <div class="stats-section">
+                <h3>ملفك الشخصي</h3>
+                <p>اطلب الكود من البوت على تليغرام عبر إرسال الأمر <code>/getcode</code> ثم أدخله هنا.</p>
+                <div class="code-input-container">
+                    <input type="text" id="stats-code-input" placeholder="أدخل الكود هنا...">
+                    <button id="fetch-stats-btn" class="btn">عرض ملفي</button>
                 </div>
+                <div id="user-stats-container" class="user-stats-card">
+                    </div>
             </div>
-        </section>
+
+            <div class="stats-section">
+                <h3>🏆 لوحة الصدارة</h3>
+                <p>أكثر 10 أعضاء تفاعلاً في المجموعة.</p>
+                <div id="leaderboard-container">
+                    </div>
+            </div>
+        </div>
         
-        <section id="quotes" class="content-section">
-            <div class="container">
-                <h2>كلماتنا المميزة</h2>
-                <blockquote>
-                    "النار والدم."
-                    <footer>- شعار آل تارجارين</footer>
-                </blockquote>
-                <blockquote>
-                    "عندما تُلعب لعبة العروش، إما أن تفوز أو تموت."
-                    <footer>- سيرسي لانستر</footer>
-                </blockquote>
-            </div>
-        </section>
-
     </main>
 
-    <footer id="contact">
-        <div class="container">
-            <p>هل تحتاج إلى مساعدة؟</p>
-            <a href="https://t.me/TickettsysBot" target="_blank" class="contact-button">تواصل مع الإدارة</a>
-            <p class="copyright">&copy; 2025 مجتمع النار والدم. كل الحقوق محفوظة.</p>
-        </div>
-    </footer>
+    <nav class="bottom-nav">
+        <button class="nav-button active" data-page="home"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>الرئيسية</button>
+        <button class="nav-button" data-page="events"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>الفعاليات</button>
+        <button class="nav-button" data-page="announcements"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>الإعلانات</button>
+        <button class="nav-button" data-page="rules"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>القوانين</button>
+        <button class="nav-button" data-page="stats">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M16,11.78L20.24,4.45L21.66,5.87L17.41,13.2L16,11.78M4,18V15H6V18H4M4,13V10H6V13H4M4,8V5H6V8H4M7,18V15H9V18H7M7,13V10H9V13H7M7,8V5H9V8H7M10,18V15H12V18H10M10,13V10H12V13H10M10,8V5H12V8H10M13,18V15H15V18H13M13,13V10H15V13H13M13,8V5H15V8H13Z"/></svg>
+            الإحصائيات
+        </button>
+        <button class="nav-button" data-page="links"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>روابط</button>
+    </nav>
 
-    <script src="script.js"></script>
+<script>
+    window.addEventListener('load', () => {
+        const splash = document.getElementById('splash-screen');
+        
+        setTimeout(() => {
+            if (splash) {
+                splash.classList.add('hidden');
+                document.body.classList.add('loaded');
+            }
+             setTimeout(() => {
+                if(splash) {
+                   splash.style.display = 'none';
+                }
+            }, 1000); 
+        }, 1500); 
+
+        const navButtons = document.querySelectorAll('.nav-button');
+        const pages = document.querySelectorAll('.page');
+
+        // === كود JavaScript الجديد + التعديلات ===
+        
+        // !! هام جداً !!
+        // استبدل هذا الرابط بالرابط العام لسيرفرك الذي يشغل البوت والـ API
+        const API_BASE_URL = 'https://your-app-name.on-render.com/api'; 
+
+        const fetchStatsBtn = document.getElementById('fetch-stats-btn');
+        const codeInput = document.getElementById('stats-code-input');
+        const userStatsContainer = document.getElementById('user-stats-container');
+        const leaderboardContainer = document.getElementById('leaderboard-container');
+
+        // جلب بيانات المستخدم الشخصية عند الضغط على الزر
+        fetchStatsBtn.addEventListener('click', () => {
+            const code = codeInput.value.trim();
+            if (!code) {
+                alert('الرجاء إدخال الكود');
+                return;
+            }
+
+            userStatsContainer.innerHTML = '<p>جاري التحميل...</p>';
+            userStatsContainer.classList.add('visible');
+
+            fetch(`${API_BASE_URL}/stats/${code}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw new Error(err.error || 'كود غير صحيح أو حدث خطأ ما.') });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    userStatsContainer.innerHTML = `
+                        <h4>بطاقتك التعريفية</h4>
+                        <p>الاسم: <span>${data.first_name}</span></p>
+                        <p>الرتبة: <span>${data.rank}</span></p>
+                        <p>عدد الرسائل: <span>${data.messages_count}</span></p>
+                    `;
+                })
+                .catch(error => {
+                    userStatsContainer.innerHTML = `<p style="color: var(--primary-color);">${error.message}</p>`;
+                });
+        });
+
+        // جلب وعرض لوحة الصدارة
+        function renderLeaderboard() {
+            if(!leaderboardContainer) return;
+            leaderboardContainer.innerHTML = '<p>جاري تحميل القائمة...</p>';
+            fetch(`${API_BASE_URL}/leaderboard`)
+                .then(response => response.json())
+                .then(data => {
+                    leaderboardContainer.innerHTML = ''; // إفراغ الحاوية
+                    if (data.length === 0) {
+                        leaderboardContainer.innerHTML = '<p>لا توجد بيانات لعرضها بعد.</p>';
+                        return;
+                    }
+                    data.forEach((user, index) => {
+                        const item = document.createElement('div');
+                        item.className = 'leaderboard-item';
+                        item.innerHTML = `
+                            <span class="rank">#${index + 1}</span>
+                            <span class="name">${user.first_name}</span>
+                            <span class="messages">${user.messages_count} رسالة</span>
+                        `;
+                        leaderboardContainer.appendChild(item);
+                    });
+                })
+                .catch(error => {
+                    leaderboardContainer.innerHTML = '<p style="color: var(--primary-color);">حدث خطأ أثناء تحميل لوحة الصدارة. تأكد من أن السيرفر يعمل.</p>';
+                });
+        }
+        
+        // تعديل دالة showPage لتشمل تحميل بيانات الإحصائيات
+        function showPage(pageId) {
+            pages.forEach(page => page.classList.remove('active'));
+            const newPage = document.getElementById(pageId);
+            if (newPage) {
+                newPage.classList.add('active');
+            }
+            navButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.page === pageId);
+            });
+            window.scrollTo(0, 0);
+
+            // إذا كانت الصفحة هي صفحة الإحصائيات، قم بتحميل لوحة الصدارة
+            if (pageId === 'stats') {
+                renderLeaderboard();
+            }
+        }
+        
+        // --- نهاية الكود الجديد ---
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => showPage(button.dataset.page));
+        });
+
+        function renderEvents(eventsData) {
+            const container = document.getElementById('event-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!eventsData || eventsData.length === 0) {
+                container.innerHTML = '<p>لا توجد فعاليات مجدولة حاليًا.</p>';
+                return;
+            }
+            eventsData.forEach(event => {
+                const card = document.createElement('div');
+                card.className = 'event-card';
+                card.innerHTML = `
+                    <div><h3>${event.name}</h3><div class="event-info"><span>📅 ${event.date}</span><span class="event-type">${event.type}</span></div></div>
+                    <a href="${event.link}" target="_blank" class="btn btn-secondary">شارك بالفعالية</a>`;
+                container.appendChild(card);
+            });
+        }
+
+        function renderAnnouncements(announcementsData) {
+            const container = document.getElementById('announcements-container');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!announcementsData || announcementsData.length === 0) {
+                container.innerHTML = '<p>لا توجد إعلانات حاليًا.</p>';
+                return;
+            }
+            announcementsData.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'announcement-post';
+                postDiv.innerHTML = `<h3>${post.title}</h3><p>${post.content}</p>`;
+                container.appendChild(postDiv);
+            });
+        }
+        
+        fetch('events.json?v=' + new Date().getTime())
+            .then(response => response.json())
+            .then(data => renderEvents(data))
+            .catch(error => console.error('Error fetching events:', error));
+
+        fetch('announcements.json?v=' + new Date().getTime())
+            .then(response => response.json())
+            .then(data => renderAnnouncements(data))
+            .catch(error => console.error('Error fetching announcements:', error));
+
+        showPage('home');
+    });
+</script>
+
 </body>
 </html>
-
